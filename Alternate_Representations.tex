@@ -1,0 +1,182 @@
+We will start with by using our newfound knowledge to compute $(1/2)! = \Gamma(3/2)$.
+First, however, we need to make a slight modification to our formula to recover Euler's historically first expression for $\Gamma(x)$.
+
+\begin{prop}
+\begin{equation}\label{historicProductForm}
+\Gamma(x+1) = \prod_{j=1}^\infty \left( \frac{\left(1 + \frac{1}{j}\right)^x}{1 + \frac{x}{j}}\ \right).
+\end{equation}
+\end{prop}
+
+\begin{proof}
+First recall that
+$$\Gamma(x+1) = \lim_{N \rightarrow \infty} N^x \prod_{j=1}^N \left( \frac{j}{j+x} \right).$$
+Dividing through by $j$ inside the product, we find
+$$\Gamma(x+1) = \lim_{N \rightarrow \infty} N^x \prod_{j=1}^N \frac{1}{1 + \frac{x}{j}}.$$
+All that is left to show now is that, in the limit,
+$$N^x \approx \prod_{j=1}^N \left(1 + \frac{1}{j}\right)^x.$$
+This is true if
+$$\prod_{j=1}^N \left(1 + \frac{1}{j}\right) = N+1,$$
+which we will show by induction on $N$.
+The base case of $N=1$ is clear.
+For the inductive step, take some $k \in \N$ such that 
+$$\prod_{j=1}^k \left(1 + \frac{1}{j}\right) = k+1.$$
+Then, the product up to $k+1$ can be manipulated as follows.
+\begin{align*}
+\prod_{j=1}^{k+1} \left(1 + \frac{1}{j}\right) &= \left(1+\frac{1}{k+1}\right)\prod_{j=1}^{k} \left(1 + \frac{1}{j}\right) \\
+&= \left(1+\frac{1}{k+1}\right) (k+1) \\
+&= (k+1) + 1.
+\end{align*}
+Therefore, our inductive step is fulfilled, our desired limit is true, and
+$$\Gamma(x+1) = \prod_{j=1}^\infty \left( \frac{\left(1 + \frac{1}{j}\right)^{x}}{1 + \frac{x}{j}} \right).$$
+\end{proof}
+
+Now, computing $(1/2)!$ is a matter of substituting $x=1/2$ into \eqref{historicProductForm}.
+\begin{align*}
+\Gamma(3/2) &= \prod_{j=1}^\infty \frac{\left(1 + \frac{1}{j}\right)^{1/2}}{1 + \frac{1}{2j}} \\
+&= \left(\prod_{j=1}^\infty \frac{1 + \frac{1}{j}}{\left(1 + \frac{1}{2j}\right)^2}\right)^{1/2} \\
+\implies \Gamma^2 (3/2) &= \prod_{j=1}^\infty \frac{4j^2 + 4j}{(2j+1)^2} \\
+&= \prod_{j=1}^\infty \frac{2j(2j+2)}{(2j+1)^2} \\
+&= \frac{1}{2} \left[ 2 \cd \left(\frac{2\cd4}{3^2}\right) \left(\frac{4\cd6}{5^2}\right) \cdots \right] \\
+&= \frac{1}{2} \left[ \left(\frac{2\cd2}{1\cd3}\right) \left(\frac{4\cd4}{3\cd5}\right) \left(\frac{6\cd6}{5\cd7}\right) \cdots \right] \\
+&= \frac{1}{2} \prod_{j=1}^\infty \frac{(2j)^2}{(2j-1)(2j+1)}.
+\end{align*}
+This final product that we have is the famous \textit{Wallis Product}, which comes out to $\frac{\pi}{2}$ \cite{WallisProduct}.
+Therefore,
+$$\Gamma^2 (3/2) = \frac{1}{2} \frac{\pi}{2}$$
+\begin{equation}\label{gammaGaussian}
+\boxed{\Gamma (3/2) = \frac{\sqrt{\pi}}{2}}.
+\end{equation}
+It is remarkable that $\pi$ is in this result. 
+Where there is $\pi$, there are circles, and where there are circles, there's most likely also quadrature, i.e. integration.
+Additionally, those familiar with the Error function will recognize this result as integrating the Gaussian over $\R_+$.
+These two facts hint at a possible integral representation for $\Gamma(x)$.
+
+One promising appearance of the factorial in elementary calculus is the power rule.
+We know that
+$$\frac{d^n}{dx^n} x^n = n!.$$
+To use this to construct the desired integral, we would like to use $n$-fold differentiation under the integral sign.
+Because of the previous connection to the Gaussian integral, we assume our bounds should be over $\R_+$. 
+So far, we have that
+$$\Gamma(n+1) \stackrel{?}{=} \int_{0}^\infty x^n \ dx.$$
+The immediate issue is that this integral does not converge.
+To solve this, we introduce a damping factor $e^{-x}$.
+Because we want to generalize this integral to beyond the natural numbers, we will rename $n \mapsto x$ and $x \mapsto t$.
+
+\begin{equation}\label{intForm}
+\boxed{\Gamma(x) = \int_{0}^\infty t^{x-1} e^{-t} \ dt}
+\end{equation}
+
+Additionally, let's perform a sanity check by using \eqref{intForm} to calculate $\Gamma(3/2)$, and to ensure there is no normalization constant we are missing
+
+\begin{prop}
+By \eqref{intForm}, $\Gamma(3/2) = \frac{\sqrt{\pi}}{2}$.
+\end{prop}
+
+\begin{proof}
+$$\Gamma(3/2) = \int_{0}^\infty \sqrt{t} e^{-t} \ dt.$$
+Now we substitute $x = \sqrt{t}$, which implies that $dt = 2x dx$.
+Our limits of integration are fixed.
+$$\Gamma(3/2) = 2\int_{0}^\infty x^2 e^{-x^2} \ dx.$$
+Now let
+$$I(\alpha) = \int_{0}^\infty x^2 e^{-\alpha x^2} \ dx.$$
+Notice that $2I(1) = \Gamma(3/2)$.
+We now differentiate under the integral sign carelessly (the careful mathematician may justify these steps), and find our answer.
+$$I(\alpha) = -\int_0^\infty \frac{\partial}{\partial \alpha} e^{-\alpha x^2} \ dx$$
+$$I(\alpha) = -\frac{d}{d\alpha} \int_{0}^\infty e^{-\alpha x^2} \ dx.$$
+The final integral is a modified Gaussian, which evaluates to $\frac{1}{2}\sqrt{\frac{\pi}{\alpha}}$ \cite{Gaussian}.
+$$I(\alpha) = -\frac{\sqrt{\pi}}{2}\frac{d}{d\alpha} \frac{1}{\sqrt{\alpha}}$$
+$$I(\alpha) = \frac{\sqrt{\pi}}{4\alpha^{3/2}}.$$
+Therefore,
+$$\Gamma(3/2) = \frac{\sqrt{\pi}}{2},$$
+so \eqref{intForm} agrees with \eqref{EulerForm} in this case.
+\end{proof}
+
+Our construction so far has been loose, so we will now ensure that this expression, which we are tentatively calling the $\Gamma$ function, actually has the desired properties.
+
+\begin{lem}
+\eqref{intForm} satisfies $\Gamma (n+1) = n!$ for any natural number $n$.
+\end{lem}
+
+\begin{proof}
+We use our iterated differentiation and differentiation under the integral sign ideas by parameterizing $\Gamma(n,\alpha)$.
+Consider the function
+$$\Gamma(n+1,\alpha) = \int_0^\infty t^{n} e^{-\alpha t} \ dt$$
+for $\alpha > 0$.
+Notice that $\Gamma(n+1,1) = \Gamma(n+1)$
+We now differentiate under the integral sign with respect to alpha $n$ times, taking care of the resultant sign.
+$$\Gamma(n+1, \alpha) = (-1)^n \int_{0}^\infty \frac{\partial^n}{\partial \alpha^n} e^{-\alpha t} \ dt.$$
+Now with some trickery (which the careful mathematician can justify), we exchange the order of integration and differentiation.
+$$\Gamma(n+1, \alpha) = (-1)^n \frac{d^n}{d\alpha^n} \int_{0}^\infty e^{-\alpha t} \ dt.$$
+Now, we are free to compute.
+$$\Gamma(n+1, \alpha) = (-1)^n \frac{d^n}{d\alpha^n} \left[\frac{-e^{-\alpha t}}{\alpha}\right]_{0}^\infty$$
+$$\Gamma(n+1, \alpha) = (-1)^n \frac{d^n}{d\alpha^n} \left( \frac{1}{\alpha} \right)$$
+$$\Gamma(n+1, \alpha) = (-1)^n (-1)^n \frac{n!}{\alpha^{n+1}}$$
+$$\Gamma(n+1, \alpha) = \frac{n!}{\alpha^{n+1}}.$$
+Recovering our original $\Gamma(x)$ by setting $\alpha = 1$, we find that 
+$$\Gamma(n+1) = n!,$$
+as required.
+\end{proof}
+
+\begin{lem}
+\eqref{intForm} satisfies $\Gamma(x+1) = x \Gamma(x)$ for all $x \in \R - \Z_{\leq 0}$.
+\end{lem}
+
+\begin{proof}
+We know that
+$$\Gamma(x+1) = \int_0^\infty t^x e^{-t} \ dt.$$
+Now we use integration by parts as follows.
+\[
+\begin{NiceArray}{c @{\hspace*{1.0cm}} c}[create-medium-nodes]
+  \toprule
+     D & I \\
+  \cmidrule{1-2}
+    +t^x & e^{-t} \\
+    -xt^{x-1}  & -e^{-t} \\      
+  \bottomrule
+\CodeAfter
+  \begin{tikzpicture} [->, name suffix = -medium]
+  \draw [black] (2-1) -- node [above] {} (3-2) ; 
+  \draw [black] (3-2) -- node [below] {} (3-1) ;
+  \end{tikzpicture}
+\end{NiceArray}
+\]
+
+Therefore, we find that
+$$\Gamma(x+1) = -[t^x e^{-t}]_0^\infty + x \int_{0}^\infty t^{x-1} e^{-t} \ dt$$
+$$\Gamma(x+1) = x \Gamma(x),$$
+as required.
+\end{proof}
+
+Now all we have to prove is logarithmic convexity of \eqref{intForm}.
+
+\begin{lem}
+\eqref{intForm} is logarithmically convex on $(0,\infty)$.
+\end{lem}
+
+\begin{proof}
+From the definition of convexity, all we have to show is that the function
+$$\phi_t(x) = t^{x} e^{-t}$$
+is logarithmically convex for a given $t$.
+Take $a,b \in (0,\infty)$ and $\gamma \in [0,1]$.
+Then, we want to show that 
+$$\phi_t (\gamma a + (1-\gamma)b) \leq \gamma\phi_t(a) + (1-\gamma)\phi_t(b)$$
+$$\iff t^{\gamma a + (1-\gamma)b} e^{-t} \leq \gamma t^{a} e^{-t} + (1-\gamma) t^b e^{-t}$$
+$$\iff t^{\gamma a} t^{(1-\gamma)b} \leq \gamma t^a + (1-\gamma) t^b.$$
+This is true if and only if the exponential function is convex, which one can prove by taking the second derivative and showing that it is greater than zero.
+Therefore, \eqref{intForm} describing $\Gamma(x)$ is convex.
+\end{proof}
+
+\begin{thm}
+The $\Gamma$ function can be written as 
+$$\Gamma(x) = \int_0^\infty t^{x-1} e^{-t} \ dt.$$
+\end{thm}
+
+\begin{proof}
+We know that $\Gamma(x)$ given by \eqref{intForm} satisfies all the conditions of definition \eqref{BohrMollerupDef} by the previous three lemmas. 
+We also know by the Bohr-Mollerup theorem that definition \eqref{BohrMollerupDef} specifies a unique function.
+Therefore,
+$$\Gamma(x) = \int_0^\infty t^{x-1} e^{-t} \ dx = \lim_{N \rightarrow \infty} \frac{N! N^x}{\prod_{j=0}^N (x+j)}.$$
+\end{proof}
+
+Now we may see the importance of the $\Gamma$ function, as we can use these two representations to solve entire classes of summations, products, and integrals.
+We will demonstrate this power in the examples section, after we have developed some more tools.

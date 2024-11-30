@@ -1,0 +1,55 @@
+When computing with the $\Gamma$ function, one often comes across expressions of the form $\Gamma(x)\Gamma(1-x)$.
+One would expect that this is as simple as it can be -- that there is no closed form for such an expression.
+That person would be wrong.
+Remarkably, this kind of expression has a closed form, using only trigonometric functions!
+The goal of this section is to derive this remarkable result, and to explore Weierstrass's form, given in \eqref{WeierstrassFactorial}.
+
+Recall our original definition that 
+$$\Gamma(x) = \lim_{N\rightarrow \infty} \frac{N! N^x}{\prod_{j=0}^N (x + j)}.$$
+We will manipulate this to recover \eqref{WeierstrassFactorial}.
+First, we pull the $j=0$ term, $x$, out of the product, and take reciprocal.
+$$\frac{1}{\Gamma(x)} = \lim_{N \rightarrow \infty} x N^{-x} \prod_{j=0}^N \left( \frac{j+x}{j} \right)$$
+$$\frac{1}{\Gamma(x)} = \lim_{N \rightarrow \infty} x e^{-x\ln N} \prod_{j=1}^N \left( 1 + \frac{x}{j} \right)$$
+Multiplying by a convenient factor of $e^{-x/j} e^{x/j}$ for each $j$ in the product, we find a nice formula in terms of $x/j$.  
+$$\frac{1}{\Gamma(x)} = \lim_{N \rightarrow \infty} xe^{-x\ln N} \prod_{j=1}^N \left( 1 + \frac{x}{j} \right) e^{-x/j} e^{x/j}$$
+$$\frac{1}{\Gamma(x)} = \lim_{N \rightarrow \infty} xe^{x\sum_{j=1}^N \frac{1}{j} -x\ln N} \prod_{j=1}^N \left( 1 + \frac{x}{j} \right) e^{-x/j} $$
+$$\frac{1}{\Gamma(x)} = \lim_{N \rightarrow \infty} xe^{x\left(\sum_{j=1}^N \frac{1}{j} -\ln N\right)} \prod_{j=1}^N \left( 1 + \frac{x}{j} \right) e^{-x/j}.$$
+
+\begin{defn}
+The \textit{Euler-Mascheroni constant} $\gamma$ is the limit of the difference of the sum of the first $N$ harmonic terms with the logarithm of $N$.
+$$\gamma \equiv \lim_{N \rightarrow \infty} \sum_{j=1}^N \frac{1}{j} - \ln N.$$
+\end{defn}
+This constant is mysterious, as no one has shown if it is irrational, let alone transcendental \cite{EulerMascheroni}.  
+
+With this new constant in hand, we can see that
+\begin{equation}\label{WeierstrassForm}
+\boxed{\frac{1}{\Gamma(x)} = xe^{\gamma x} \prod_{j=1}^\infty \left(1 + \frac{x}{j}\right)e^{-x/j}}.
+\end{equation}
+\eqref{WeierstrassForm} is called the \textit{Weierstrass Form} of the $\Gamma$ function. 
+In this form, it is clear that the $\Gamma$ function has poles only on the negative integers.
+This form is especially nice because it writes $\Gamma(x)$ using its zeros, similar to how one can factor a polynomial over $\mathbb{C}$.
+
+In fact, there is a similar result for $\sin(x)$, proven by Euler \cite{SinProduct}, that
+$$\sin (x) = x \prod_{j=1}^\infty \left(1 - \frac{x^2}{\pi^2 j^2}\right).$$
+Sending $x \mapsto \pi x$, we can see that
+\begin{equation}\label{SinProductEq}
+\sin (\pi x) = \pi x \prod_{j=1}^\infty \left(1 - \frac{x^2}{j^2}\right).
+\end{equation}
+Using these results, we are now able to prove the Reflection Formula.
+
+\begin{thm}
+The Reflection Formula is given by
+\begin{equation}\label{ReflectionFormula}
+\boxed{\Gamma(x)\Gamma(1-x) = \frac{\pi}{\sin (\pi x)}}.
+\end{equation}
+\end{thm}
+
+\begin{proof}
+We start by using \eqref{WeierstrassForm} to compute the reciprocal of what we want.
+$$\frac{1}{\Gamma(x)\Gamma(1-x)} = \frac{1}{-x\Gamma(x)\Gamma(-x)}$$
+$$\frac{1}{\Gamma(x)\Gamma(1-x)} = -\frac{1}{x} \left[ xe^{\gamma x} \prod_{j=1}^\infty \left(1 + \frac{x}{j}\right) e^{-x/j} \right] \left[ -x e^{-\gamma x} \prod_{k=1}^\infty \left(1 - \frac{x}{k}\right) e^{x/k} \right].$$
+$$\frac{1}{\Gamma(x)\Gamma(1-x)} = x\prod_{j=1}^\infty \left(1 - \frac{x^2}{j^2}\right)$$
+We see that this product is \eqref{SinProductEq}, up to a factor of $\pi$.
+$$\frac{1}{\Gamma(x)\Gamma(1-x)} = \frac{\sin (\pi x)}{\pi}$$
+$$\Gamma(x) \Gamma(1-x) = \frac{\pi}{\sin (\pi x)}$$
+\end{proof}

@@ -1,0 +1,149 @@
+Recall our function $L(x) = \ln x! = \ln \Gamma(x+1)$ from \eqref{LFunction}.
+Although it was pivotal for our derivation of $\Gamma(x)$, we have so far neglected to explore it.
+We are motivated by the fact that $L(x)$ naturally converts the product present in the expression for $\Gamma(x)$ given in \eqref{EulerForm} into a series.
+Since series are some of the most troublesome characters in the solutions for many problems, any tools that $L(x)$ may provide which soothe our computational woes are deeply welcome.
+
+Our first course of business is to take care of Euler's domain shift, while keeping the spirit of $L(x)$.
+We will define the function
+\begin{equation}\label{digammaAntiderivative}
+\Psi^{(-1)} (x) \equiv \ln \Gamma(x).
+\end{equation}
+This perplexing choice of notation for $\Psi^{(-1)}$ will be justified later in this section.
+For now, I ask you to simply play along.
+
+Let's see how many properties of $\Psi^{(-1)}$ we can find before diving into any deep computations.
+Firstly, our definition immediately implies that
+$$\Psi^{(-1)}(x) = L(x-1).$$
+From the recursion relation of $\Gamma(x)$, we know that
+$$\Gamma(x+1) = x\Gamma(x),$$
+so applying our definition for $\Psi^{(-1)}$ gives
+\begin{equation}\label{digammaAntiderivativeRecursionFormula}
+\Psi^{(-1)} (x+1) = \Psi^{(-1)} (x) + \ln x.
+\end{equation}
+This gives us an important recursion relation for $\Psi^{(-1)}$.
+Finally, from the definition of $\Gamma(x)$, we know that it is log-convex, so $\Psi^{(-1)}$ must be a convex function.
+
+Now let's warm up with some light computations.
+Recall the remarkable Reflection Formula for $\Gamma(x)$ from \eqref{ReflectionFormula}, which says that
+$$\Gamma(x)\Gamma(1-x) = \frac{\pi}{\sin (\pi x)}.$$
+Taking the logarithm on both sides, we see the useful reflection formula
+\begin{equation}\label{digammaAntiderivativeReflectionFormula}
+\Psi^{(-1)}(x) + \Psi^{(-1)}(1-x) = \ln \pi + \ln \csc (\pi x).
+\end{equation}
+
+Recall \eqref{WeierstrassForm}, the Weierstrass form for $\Gamma(x)$, given by
+$$\frac{1}{\Gamma(x)} = xe^{\gamma x} \prod_{j=1}^\infty \left( 1 + \frac{x}{j}\right) e^{-x/j}.$$
+Applying the definition of $\Psi^{(-1)}(x)$,
+\begin{equation}\label{digammaAntiderivativeWeierstrass}
+-\Psi^{(-1)} (x) = \ln x + \gamma x + \sum_{j=1}^\infty \ln \left(1 + \frac{x}{j}\right) - \frac{x}{j}.
+\end{equation}
+We now expand the definition of $\gamma$, given by (4.1).
+$$-\Psi^{(-1)} (x) = \ln x + \lim_{N \rightarrow \infty} -x\ln N + \sum_{j=1}^N \left(\frac{x}{j} - \frac{x}{j} + \ln \left( 1 + \frac{x}{j} \right) \right)$$
+\begin{equation}\label{digammaAntiderivativeLimit}
+\Psi^{(-1)} (x) = -\ln x + \lim_{N \rightarrow \infty} x\ln N - \sum_{j=1}^N \ln \left(1 + \frac{x}{j}\right)
+\end{equation}
+This is one expression for $\Psi^{(-1)}(x)$ which we will use in the future.
+
+We can check this directly by recalling \eqref{EulerForm}, which gives
+$$\Gamma(x) = \lim_{N \rightarrow \infty} \frac{N! N^x}{\prod_{j=0}^N (x+j)}.$$
+Using the same procedure as above, we will compute $\Psi^{(-1)}(x)$.
+$$\Psi^{(-1)}(x) = \lim_{N \rightarrow \infty} \ln N! + x\ln N - \sum_{j=0}^N \ln (x + j).$$
+Expanding the definition of $N!$, we can simplify this expression.
+$$\Psi^{(-1)}(x) = \lim_{N \rightarrow \infty} x\ln N - \ln x + \sum_{j=1}^N \ln \left( \frac{j}{x+j} \right)$$
+$$\Psi^{(-1)} (x) = -\ln x + \lim_{N \rightarrow \infty} x\ln N - \sum_{j=1}^N \ln \left(1 + \frac{x}{j}\right).$$
+This agrees with \eqref{digammaAntiderivativeLimit}, as expected.
+
+So far, $\Psi^{(-1)}(x)$ has not given us anything which we could not have gotten from $\Gamma(x)$.
+This is not unexpected, however, because it is simply the logarithm.
+To extract new information from $\Psi^{(-1)}$, we can take the derivative.
+
+\begin{defn}
+The Digamma Function is given by
+\begin{equation}\label{digammaDefinition}
+\Psi(x) \equiv \frac{d \Psi^{(-1)}}{dx} = \frac{d \ln \Gamma}{dx}.
+\end{equation}
+\end{defn}
+
+Now the notation $\Psi^{(-1)}(x)$ takes on the meaning of the anti-derivative of the Digamma function, justifying our previous notation.  
+
+One may reasonably ask why we consider the \textit{logarithmic} derivative of $\Gamma(x)$, and not the regular derivative. 
+For one, our expression for $\Gamma(x)$, both in the Eulerian product \eqref{EulerForm} and the Weierstrass form \eqref{WeierstrassForm}, rely on infinite products.
+In general, differentiating an infinite product is messy, and does not produce many useful results in this case.
+One can, of course, use the integral form \eqref{intForm} to find a simple expression for the derivative of $\Gamma(x)$, which is occasionally useful.
+Nevertheless, the derivative is a linear operator, so we want to work with sums, not products.
+
+We will now find a computable expression for \eqref{digammaDefinition}.
+Starting with \eqref{digammaAntiderivativeWeierstrass}, we find that 
+$$\Psi(x) = -\frac{1}{x} - \gamma + \sum_{j=1}^\infty \frac{1}{j} - \frac{\frac{1}{j}}{1 + \frac{x}{j}}$$
+$$\Psi(x) = -\frac{1}{x} - \gamma + \sum_{j=1}^\infty \frac{1}{j} - \frac{1}{x + j}$$
+$$\Psi(x) = -\gamma + \sum_{j=1}^\infty \frac{1}{j} - \frac{1}{x + j -1}$$
+\begin{equation}\label{digammaEquation}
+\boxed{\Psi(x) = -\gamma + \sum_{j=1}^\infty \frac{x - 1}{j (x + j -1)}}.
+\end{equation}
+
+Using \eqref{digammaAntiderivativeLimit} instead, we find the following.
+$$\Psi(x) = -\frac{1}{x} + \lim_{N \rightarrow \infty} \ln N - \sum_{j=1}^N \frac{\frac{1}{j}}{1 + \frac{x}{j}}$$
+$$\Psi(x) = -\frac{1}{x} + \lim_{N \rightarrow \infty} \ln N - \sum_{j=1}^N \frac{1}{x + j}$$
+\begin{equation}\label{digammaEquationLimit}
+\boxed{\Psi(x) = \lim_{N \rightarrow \infty} \ln N - \sum_{j=0}^N \frac{1}{x + j}}.
+\end{equation}
+
+Using \eqref{digammaEquation} and \eqref{digammaEquationLimit}, we can find a closed-form for many classes of sums.
+We will go into more depth into this class of problems in the examples section, but for now, we can solve some especially simple cases.
+
+First consider when $x = 1$.
+From \eqref{digammaEquation}, we see that $\Psi(1) = -\gamma$.
+This can also be seen from \eqref{digammaEquationLimit}, where $x = 1$ corresponds to the negative of the definition of $\gamma$.
+
+Now consider when $x = 2$. 
+From \eqref{digammaEquation}, we see that
+$$\Psi(2) = -\gamma + \sum_{j=1}^\infty \frac{1}{j^2 + j}$$
+$$\Psi(2) = -\gamma + \sum_{j=1}^\infty \frac{1}{j} - \frac{1}{j+1}$$
+$$\Psi(2) = 1 - \gamma.$$
+
+
+Now we will explore the topic of recurrence and reflection formulas for $\Psi(x)$, which have brought us great glory with $\Gamma(x)$.
+From \eqref{digammaAntiderivativeRecursionFormula}, we can see that
+\begin{equation}\label{digammaRecursionFormula}
+\boxed{\Psi(x+1) = \Psi(x) + \frac{1}{x}},
+\end{equation}
+giving a simple recursion relation.
+From \eqref{digammaAntiderivativeReflectionFormula}, we can see that
+$$\Psi(x) - \Psi(1-x) = -\frac{d}{dx} \ln \sin (\pi x)$$
+$$\Psi(x) = \Psi(1-x) + -\frac{\pi \cos (\pi x)}{\sin (\pi x)}$$
+\begin{equation}\label{digammaReflectionFormula}
+\boxed{\Psi(x) = \Psi(1-x) + \pi \cot (\pi x)}. 
+\end{equation}
+
+Combining the recursion formula for $\Psi(x)$, \eqref{digammaRecursionFormula}, with our observation that $\Psi(1) = -\gamma,$ we see that for $n \in \N$,
+$$\Psi(n) = \sum_{j=1}^n \frac{1}{n} - \gamma,$$
+showing how the Harmonic Series is connected to the Digamma function.
+The appearance of $\gamma$, the definition of which required the Harmonic Series, in our computations hinted at a possible connection between our area of study and that of the Harmonic Series.
+This result cements that connection, as $\Psi(x)$ is to the Harmonic Series what $\Gamma(x)$ is to the factorial function. 
+
+Since the study of $\Psi(x)$ has given us some powerful tools, it is natural to see what other results we can squeeze out by taking further derivatives.
+This motivated the definition of the \textit{Polygamma Functions}.
+
+\begin{defn}
+The Polygamma Function of order $n$ is given by 
+\begin{equation}\label{polygammaDefinition}
+\Psi_n (x) \equiv \frac{d^n}{dx^n} \Psi(x) = \frac{d^{n+1}}{dx^{n+1}} (\ln \Gamma(x)),
+\end{equation}
+where $\Psi_0 (x) \equiv \Psi(x)$.
+\end{defn}
+
+It is not so tedious to derive a closed form for \eqref{polygammaDefinition} if we start from \eqref{digammaEquationLimit}.
+If we start with \eqref{digammaEquation} instead, we need to handle the quotient of products in the infinite series, creating a tractable but ultimately unnecessary mess.
+$$\Psi_n(x) = \frac{d^n}{dx^n} \Psi(x)$$
+$$\Psi_n(x) = \frac{d^n}{dx^n} \left[ \lim_{N \rightarrow \infty} \ln N - \sum_{j=0}^N \frac{1}{x+j} \right]$$
+$$\Psi_n(x) = -\frac{d^n}{dx^n} \sum_{j=0}^\infty \frac{1}{x+j} \hspace{10px} (\text{Assuming $n \geq 1$})$$
+\begin{equation}\label{polygammaEquation}
+\boxed{\Psi_n(x) = \sum_{j=0}^\infty \frac{(-1)^{n+1} n!}{(x+j)^{n+1}}} \hspace{10px} \text{for $n \geq 1$}.
+\end{equation}
+
+We will finish this section by using \eqref{digammaRecursionFormula} to find a recursion formula for $\Psi_n (x)$.
+We can see that
+\begin{equation}\label{polygammaRecursionFormula}
+\boxed{\Psi_n (x+1) = \Psi_n (x) + \frac{(-1)^{n} n!}{x^{n+1}}}.
+\end{equation}
+Notice the striking similarity to \eqref{polygammaEquation}, due to the artifact of repeated differentiation of a power, which we had originally used to find the integral form for $\Gamma(x)$.

@@ -1,0 +1,87 @@
+This section will be a collection of results obtainable using the tools we have developed so far.
+We start by considering the Bose-Einstein integrals, which are inspired by the quantum statistics of bosons.
+
+\begin{center}
+\textit{\textbf{Problem One: The Bose-Einstein Integral}}
+\end{center}
+
+Let the parameterized Bose-Einstein integral be
+$$I_{BE} (s) = \int_{0}^\infty \frac{x^s}{e^{x-t} - 1} \ dx$$
+for a constant $t < 0$. 
+Now expand by $e^{-x}$ on top and bottom.
+$$I_{BE} (s) = \int_{0}^\infty \frac{e^{-x} x^s}{e^{-t} - e^{-x}} \ dx$$
+The structure inside the integral reminds us of a geometric series, which we realize by factoring $e^{-t}$.
+$$I_{BE} (s) = e^{t} \int_0^\infty \frac{e^{-x} x^s}{1 - e^{t-x}} \ dx$$
+Now recall that the geometric series is given by 
+$$\sum_{j=0}^\infty x^j = \frac{1}{1 - x} \text{ for } |x| < 1.$$
+We use this to transform the integral.
+$$I_{BE} (s) = e^{t} \int_{0}^\infty e^{-x} x^s \sum_{j=0}^\infty (e^{t-x})^j \ dx$$
+Since we have a damping exponential, we are free to reorder the sum and integral as we please.
+$$I_{BE} (s) = \sum_{j=0}^\infty e^{t(j+1)} \int_{0}^\infty x^s e^{-x(j+1)} \ dx$$
+Noticing the similarity of the integral with the $\Gamma$ function, we make the substitution $u = x (j+1)$.
+Using the integral form, \eqref{intForm}, we find the following.
+$$I_{BE} (s) = \sum_{j=0}^\infty \frac{e^{t(j+1)}}{(j+1)^{s+1}} \Gamma(s+1)$$
+Sending $j \mapsto j+1$ and using the recursion formula for $\Gamma$, we find our answer.
+$$\boxed{I_{BE} (s) = s\Gamma(s) \sum_{j=1}^\infty \frac{e^{tj}}{j^{s+1}}}$$
+
+\begin{center}
+\textit{\textbf{Problem Two: A Factorial Sum}}
+\end{center}
+
+Consider the sum given by
+$$S_{!} = \sum_{j=0}^\infty \frac{j!}{(2j+1)!}.$$
+We can use the $\Gamma$ function to rewrite this sum.
+$$S_{!} = \sum_{j=0}^\infty \frac{\Gamma(j+1)}{\Gamma(2j+2)}$$
+$$S_{!} = \sum_{j=0}^\infty \frac{\Gamma(j+1)}{\Gamma((j+1) + (j+1))}$$
+$$S_{!} = \sum_{j=0}^\infty \frac{\Gamma(j+1) \Gamma(j+1)}{\Gamma((j+1)+(j+1)) \Gamma(j+1)}.$$
+The structure inside the sum reminds us of the $B$ function formula \eqref{betaGamma}.
+We use this to reduce the sum.
+$$S_{!} = \sum_{j=0}^\infty \frac{B(j+1,j+1)}{\Gamma(j+1)}$$
+Now we invoke the polynomial formula for the $B$ function, \eqref{betaEquationPolynomial}.
+$$S_{!} = \sum_{j=0}^\infty \frac{1}{\Gamma(j+1)} \int_0^1 x^{j} (1-x)^j \ dx$$
+$$S_{!} = \sum_{j=0}^\infty \frac{1}{\Gamma(j+1)} \int_0^1 (x(1-x))^j \ dx$$
+Carelessly, we swap the summation and integration.
+$$S_{!} = \int_0^1 \sum_{j=0}^\infty \frac{(x(1-x))^j}{\Gamma(j+1)} \ dx$$
+$$S_{!} = \int_0^1 \sum_{j=0}^\infty \frac{(x(1-x))^j}{j!} \ dx$$
+Now recall that the Taylor expansion of the exponential is given by 
+$$e^x = \sum_{j=0}^\infty \frac{x^j}{j!}.$$
+We can use this to reduce our sum.
+$$S_{!} = \int_0^1 e^{x(1-x)} \ dx$$
+$$S_{!} = \int_0^1 e^{-(x-\frac{1}{2})^2 + \frac{1}{4}} \ dx$$
+$$S_{!} = e^{\frac{1}{4}} \int_0^1 e^{-(x-\frac{1}{2})^2} \ dx$$
+Now let $t = x-\frac{1}{2}$.
+$$S_{!} = e^{\frac{1}{4}} \int_{-\frac{1}{2}}^{\frac{1}{2}} e^{-t^2} \ dt$$
+We now leverage the even property of the integrand to change the bounds.
+$$S_{!} = 2 \sqrt{\sqrt{e}} \int_{0}^{\frac{1}{2}} e^{-t^2} \ dt$$
+We can leave our answer here if we wish, as this integral can be numerically computed much quicker than our original sum.
+
+Those familiar with the Error function, however, will notice this integral as a modified version.
+Using the formula
+$$\text{Erf}(x) = \frac{2}{\sqrt{\pi}} \int_0^x e^{-t^2} \ dt,$$
+we can say that
+$$\boxed{S_{!} = \sqrt{\pi\sqrt{e}} \ \text{Erf} \left(\frac{1}{2}\right)}.$$
+
+\begin{center}
+\textit{\textbf{Problem Three: The Bernoulli Integral}}
+\end{center}
+
+Consider the integral 
+$$I_B = \int_0^1 x^x \ dx$$
+We start by rewriting the exponential.
+$$I_B = \int_0^1 e^{x\ln x} \ dx$$
+Now we invoke the Taylor expansion of the exponential.
+$$I_B = \int_0^1 \sum_{j=0}^\infty \frac{x^j \ln^j x}{j!} \ dx$$
+Carelessly, we swap and the summation and integration.
+$$I_B = \sum_{j=0}^\infty \frac{1}{j!} \int_0^1 x^j \ln^j x \ dx$$
+We perform the substitution $t = -\ln x \iff x = e^{-t} \implies dx = -e^{-t} \ dt$.
+Suitably changing bounds, we find that 
+$$I_B = \sum_{j=0}^\infty \frac{1}{j!} \int_{\infty}^0 e^{-jt} (-1)^j t^j (-e^{-jt}) \ dt$$
+$$I_B = \sum_{j=0}^\infty \frac{(-1)^j}{j!} \int_{0}^\infty t^j e^{-(j+1)t} \ dt$$
+Using a similar substitution to the one at the end of problem one, we can see that 
+$$I_B = \sum_{j=0}^\infty \frac{(-1)^j}{j! (j+1)^{j+1}} \int_0^\infty t^j e^{-t} \ dt$$
+This final integral is \eqref{intForm}, so we find a series to evaluate.
+$$I_B = \sum_{j=0}^\infty \frac{(-1)^j j!}{j! (j+1)^{j+1}}$$
+$$\boxed{I_B = \sum_{j=1}^\infty \frac{(-1)^{j+1}}{j^j}}$$
+As an exercise, one may compute the generalized
+$$I_B (\alpha) = \int_0^1 x^{x^\alpha} \ dx$$
+using this method.

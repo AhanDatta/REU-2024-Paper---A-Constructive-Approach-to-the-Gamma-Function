@@ -1,0 +1,224 @@
+\begin{defn}
+Recall that the factorial function, written $n!$, is a map on $\mathbb{N}$ given by the formula
+\begin{equation}\label{factorialDef}
+    n! \equiv n \cdot (n-1) \cdot (n-2) \cdots 1.
+\end{equation}
+\end{defn}
+The $\Gamma$ function, in short, is the ``natural" extension of the factorial function beyond the natural numbers.
+As such, we will enumerate the conditions of the standard factorial function which we want to preserve.
+The first of these conditions is the following recursion relation.
+
+\begin{pro}
+The factorial function obeys the recursion relation
+\begin{equation}\label{factorialRecursion}
+n! = n \cdot (n-1)!.
+\end{equation}
+\end{pro}
+
+To see this, consider \eqref{factorialDef}.
+All terms from $n-1$ to $1$ are themselves $(n-1)!$ by definition.
+Using \eqref{factorialRecursion}, given some $n$, we can find $(n+1)!$ and $(n-1)!$ by the following formulas.
+
+\begin{equation}\label{factorialRecursionForward}
+(n+1)! = (n+1)n!
+\end{equation}
+\begin{equation}\label{factorialRecursionBackward}
+(n-1)! = \frac{n!}{n}
+\end{equation}
+
+By \eqref{factorialDef}, we see that $1! = 1$. 
+Applying \eqref{factorialRecursionBackward} to this, we see that $0! = 1$.
+If we then try to compute $-1!$ by the same technique, we find that it is undefined because of a division by zero.
+In fact, this will happen for all negative integers.
+Therefore, whatever the form of $\Gamma$ turns out to be, it must be undefined on the negative integers.
+
+By repeated application of \eqref{factorialRecursion}, we can find a more general recursion relation given by 
+\begin{equation}\label{factorialSuperRecursion}
+(n + k)! = n! \prod_{j=1}^k (n + j).
+\end{equation}
+This relation will be crucial for our derivation.
+
+\eqref{factorialRecursionForward} and \eqref{factorialRecursionBackward} simplify our problem of generalizing the factorials significantly. 
+\begin{obs}
+Notice that once $x!$ is determined on \textit{any} closed interval of unit length, it is determined over all of $\mathbb{R}$.
+\end{obs}
+
+\begin{proof}
+Take any $x \in \mathbb{R}$. 
+Suppose $x!$ is defined on the unit interval $I = [a,a + 1]$ for some $a \in \mathbb{R}$.
+If $x \in I$, then we are done.
+Otherwise, we know by properties of the integers that we can find some $n \in \mathbb{Z}$ such that $x + n$ is in $I$. 
+Then, by repeated application of \eqref{factorialRecursionForward} or \eqref{factorialRecursionBackward} on $x + n$ will give us $x!$. 
+\end{proof}
+
+Observation (2.8) gives us the key to our derivation - we need only find one ``small" part of $\mathbb{R}$ where $n!$ is easy to extend.
+Unfortunately, it is not so easy to find such an interval for $n!$ itself.
+This difficulty stems for the rapid growth of $n!,$ which we may see by approximating its derivative.
+$$\frac{d}{dn} (n!) \approx n! - (n-1)!$$
+$$\frac{d}{dn} (n!) \approx (n-1) (n-1)!$$
+
+From this derivative approximation, we can see that the derivative of the factorial is a factorial, similar to exponentials.
+This indicates that factorials grow at least as fast as exponentials. 
+As an exercise, one may show factorials grow even faster that exponentials (hint: both exponentials and factorials are repeated multiplications, but factorials repeatedly multiply by terms that grow larger linearly, while exponentials repeatedly multiply by constant terms).
+
+To tame this growth, we will consider the following function.
+Let $L(n) = \ln (n!)$. 
+Applying logarithm rules to \eqref{factorialDef}, we find the formula
+\begin{equation}\label{LFunction}
+L(n) = \sum_{j=1}^n \ln j.
+\end{equation}
+
+Additionally, from \eqref{factorialSuperRecursion}, we see the generalized recursion relation 
+\begin{equation}\label{LFunctionRecursion}
+L(N + n) = L(N) + \sum_{j=1}^n \ln(N+j).
+\end{equation}
+
+Now, consider $\ln (N + k) - \ln N$ for $N \gg k$. 
+We know that
+$$\ln (N + k) - \ln N = \ln\left(1 + \frac{k}{N}\right).$$
+Taking the limit formally as $N \rightarrow \infty$, we see that $\ln (N+k) - \ln N \rightarrow 0$.
+We've shown roughly that $$\ln (N+k) \approx \ln N$$.
+
+Revisiting \eqref{LFunctionRecursion} With this new approximation, we can say that
+\begin{equation}\label{LFunctionApproxRecursion}
+L(N+n) \approx L(N) + n \ln N.
+\end{equation}
+Notice that \eqref{LFunctionApproxRecursion} no longer requires $n$ to be an integer, so we have effectively defined $L(x)$ over an interval using the fact that it looks almost linear for large enough $N$.
+Of course, \eqref{LFunctionApproxRecursion} cannot be ``proven" in any sense.
+We are asserting that this property should hold for $L(x)$ in the limit of large $N$.
+We can symbolically show this definition over the interval by changing variables from $n$ to $x$.
+
+Continuing from \eqref{LFunctionApproxRecursion}, we can use \eqref{LFunction} and \eqref{LFunctionRecursion} to solve for $L(x)$.
+$$L(x) + \sum_{j = 1}^N \ln (x+j) \approx \sum_{j=1}^N \ln j + x \ln N$$
+$$L(x) \approx x\ln N + \sum_{j=1}^N \ln \left( \frac{j}{x+j} \right)$$
+Taking the limit as $N \rightarrow \infty$ formally, we find an exact equality.
+$$L(x) = \lim_{N \rightarrow \infty} x \ln N + \sum_{j=1}^N \ln \left( \frac{j}{j+x} \right)$$
+Exponentiating, we find our desired generalized factorial.
+$$\boxed{x! = \lim_{N \rightarrow \infty} N^x \prod_{j=1}^N \frac{j}{x+j}}$$
+Writing this another way which makes clear the connection to the standard factorial, we get
+$$x! = \lim_{N \rightarrow \infty} \frac{N! N^x}{\prod_{j=1}^N (x+j)}.$$
+
+Notice that this formula has poles at the negative integers, because the product is undefined when $j = -x$.
+This formula agrees with our expected behaviour in the negative integer case.
+We now show that it exists for all other real numbers.
+
+\begin{prop}
+The limit in the equation 
+$$x! = \lim_{N \rightarrow \infty} N^x \prod_{j=1}^N \frac{j}{x+j}$$
+exists for all real numbers $x$ except negative integers.
+\end{prop}
+
+\begin{proof}
+Take an arbitrary real number $x$ which is not a negative integer.
+Note that we can rewrite the generalized factorial as 
+$$x! = \lim_{N \rightarrow \infty} \left[e^{-x \ln N} \prod_{j=1}^N \left(1 + \frac{x}{j}\right) \right]^{-1}.$$
+We now multiply by a strategic factor of $e^{-x/j}$ for each $j$ in the product.
+\begin{equation}\label{WeierstrassFactorial}
+    x! = \lim_{N \rightarrow \infty} \left[ e^{x(\sum_{j=1}^N (1/j) - \ln N)} \prod_{j=1}^N \left(1 + \frac{x}{j}\right) e^{-x/j} \right]^{-1}.
+\end{equation}
+\eqref{WeierstrassFactorial} is in fact another way to define the $\Gamma$ function, and was historically employed by Weierstrass. 
+Since $e^x$ is continuous, it is sufficient to show that the following two sums converge.
+Consider
+$$S_1 \equiv \lim_{N \rightarrow \infty} \left( \sum_{j=1}^N \left(\frac{1}{j}\right) - \ln N \right).$$
+By the integral test, one can show that $S_1$ converges.
+In fact, it converges to a special constant known as the \textit{Euler-Mascheroni constant}, written $\gamma$.
+Now consider the sum
+$$S_2 \equiv \sum_{j=1}^\infty \ln \left( 1 + \frac{x}{j} \right) - \frac{x}{j}.$$
+This sum converges if and only if the product
+$$\prod_{j=1}^\infty \left(1 + \frac{x}{j}\right) e^{-x/j}$$
+converges.
+We can see that $S_2$ converges by again applying the integral test.
+Therefore, $x!$ exists for our desired domain.
+\end{proof}
+
+Having done a ``derivation" of the $\Gamma$ function, we are now ready to formalize our findings.
+
+\begin{defn}\label{BohrMollerupDef}
+$\Gamma: \mathbb{R} - \mathbb{Z}_{< 0} \rightarrow \mathbb{R}$ is a function satisfying the following three conditions.
+\begin{enumerate}
+    \item for any natural number $n$, $\Gamma (n+1) = n!$
+    \item for any real number $x$, $\Gamma (x+1) = x \Gamma(x)$
+    \item $\Gamma(x)$ is logarithmically convex on $(0, \infty)$
+\end{enumerate}
+\end{defn}
+
+At this point, there are many questions about this definition.
+We will attempt to elucidate the answers to some of them, but we will inevitably ignore some others.
+As such, we recommend the reader to think deeply about this definition.
+
+The first question is regarding the domain shift by one in the definition of $\Gamma(n+1) = n!$.
+This is due to historical reasons (for this peculiarity, as with many others, we have Euler to blame).
+
+The second question is if our formula for $\Gamma(x)$ satisfies the conditions. 
+We claim that the formula
+\begin{equation}\label{EulerForm}
+\boxed{\Gamma(x) \equiv \lim_{N \rightarrow \infty} \frac{N! N^x}{\prod_{j=0}^N (x+j)}}
+\end{equation}
+does satisfy this definition.
+We can see that condition two is the recursion relation which we took as central at the start of our derivation.
+Similarly, condition three corresponds to our loose argument that $x!$ can be linearly interpolated accurately for large $x$.
+We will show this formally in the next theorem.
+
+\begin{thm}
+\eqref{EulerForm} satisfies the definition of the $\Gamma$ function.
+\end{thm}
+
+\begin{proof}
+We start by showing condition one.
+Take $n \in \N$.
+By our equation, we see
+$$\Gamma(n+1) = \lim_{N \rightarrow \infty} \frac{N!N^{n+1}}{\prod_{j=0}^N (n+1+j)}$$
+$$\Gamma(n+1) = \lim_{N \rightarrow \infty} \frac{N!N^{n+1}}{\prod_{j=1}^{N+1} (n+j)}$$
+Then notice that 
+$$\prod_{j=1}^{N+1} (n+j) = \frac{(n+N+1)!}{n!},$$
+so we get 
+$$\Gamma(n+1) = \lim_{N \rightarrow \infty} \frac{n! N! N^{n+1}}{(n+N+1)!}$$
+$$\Gamma(n+1) = n! \lim_{N \rightarrow \infty} \frac{N! N^{n+1}}{(n+N+1)!}.$$
+Now let 
+$$\mathcal{L}(n) = \lim_{N \rightarrow \infty} \frac{N! N^n}{(n+N)!}.$$
+We want to show that $\mathcal{L} = 1$, as this is equivalent to the limit in the expression for $\Gamma(n+1)$ if we send $n \mapsto n+1$.
+Cancelling terms, we see that
+$$\mathcal{L}(n) = \lim_{N \rightarrow \infty} \frac{N^n}{(N+1)\cdots(N+n)}$$
+As $N \rightarrow \infty$, $N + n \approx N$, so the denominator becomes $N^n$.
+This shows that $\mathcal{L}(n) = 1$.
+Therefore, $\forall n \in \N, \Gamma(n+1) = n!$.
+
+Now consider condition two. 
+Take any $x \in \R - \Z_{< 0}$.
+Applying our formula, 
+$$\Gamma(x+1) = \lim_{N \rightarrow \infty} \frac{N!N^{x+1}}{\prod_{j=0}^N (x + j + 1)}$$
+$$\Gamma(x+1) = \lim_{N \rightarrow \infty} \frac{Nx}{(x+N+1)} \frac{N! N^x}{\prod_{j=0}^N (x+j)}$$
+$$\Gamma(x+1) = \lim_{N \rightarrow \infty} \frac{Nx}{x+N+1} \lim_{N \rightarrow \infty} \frac{N! N^x}{\prod_{j=0}^N (x+j)}$$
+$$\Gamma(x+1) = x \Gamma(x),$$
+so our formula satisfies condition two. 
+
+Finally, we show that $\Gamma(x)$ is logarithmically convex. 
+First, we compute that 
+$$\ln \Gamma (x) = \lim_{N \rightarrow \infty} x\ln N - \ln x + \sum_{j=1}^N \left(\ln\frac{j}{x+j}\right).$$
+Now consider arbitrary $a, b \in (0, \infty)$ and $t \in [0,1]$.
+Without loss of generality, assume that $b > a$.
+We want to show that
+$$\ln\Gamma(ta + (1-t)b) \leq t\ln\Gamma(a) + (1-t)\ln\Gamma(b).$$
+This is equivalent to showing
+\begin{multline*}
+    \lim_{N \rightarrow \infty} (ta + (1-t)b)\ln N - \ln (ta + (1-t)b) + \sum_{j=1}^N \left( \ln \frac{j}{ta + (1-t)b + j} \right) \leq \\ \lim_{N \rightarrow \infty} 
+    (ta + (1-t)b)\ln N - t\ln a - (1-t)\ln b + \sum_{j=1}^N \left( t\ln \frac{j}{a+j} + (1-t) \ln \frac{j}{b+j} \right).
+\end{multline*}
+We see that the first term cancels.
+Additionally, since $\ln x$ is concave, $-\ln x$ is convex, so the inequality holds for the second and third terms. 
+By the same argument, and some log properties, one can show that the sums also obey the inequality.
+Therefore, $\Gamma(x)$ is logarithmically convex, and our equation satisfies our definition. 
+\end{proof}
+
+Now that we have a formula for $\Gamma(x)$, it would be nice to show that it is the only formula.
+Uniqueness allows us to assert that if a function satisfies the definition of the $\Gamma$ function, then it is equivalent to all of our previous representations, hence saving us the work of reproving all its properties.
+On the other hand, the proof of this theorem is long, formal, and largely a repeat of our derivation, so we shall not prove it here.
+
+\begin{thm}
+(Bohr-Mollerup Theorem) Definition \ref{BohrMollerupDef} specifies a unique function.
+\end{thm}
+
+\begin{proof}
+Two proofs are given by B\"{o}rgers and Duong \cite{uniquenessPF}\cite{uniquenessPF2}.
+\end{proof}
+

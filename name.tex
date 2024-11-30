@@ -1,0 +1,222 @@
+\documentclass[openany, amssymb, psamsfonts]{amsart}
+\usepackage{mathrsfs,comment}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[normalem]{ulem}
+\usepackage{nicematrix}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{url}
+\usepackage[all,arc,2cell]{xy}
+\UseAllTwocells
+\usepackage{enumerate}
+%%% hyperref stuff is taken from AGT style file
+\usepackage{hyperref}  
+\hypersetup{%
+  bookmarksnumbered=true,%
+  bookmarks=true,%
+  colorlinks=true,%
+  linkcolor=blue,%
+  citecolor=blue,%
+  filecolor=blue,%
+  menucolor=blue,%
+  pagecolor=blue,%
+  urlcolor=blue,%
+  pdfnewwindow=true,%
+  pdfstartview=FitBH}   
+  
+\let\fullref\autoref
+%
+%  \autoref is very crude.  It uses counters to distinguish environments
+%  so that if say {lemma} uses the {theorem} counter, then autrorefs
+%  which should come out Lemma X.Y in fact come out Theorem X.Y.  To
+%  correct this give each its own counter eg:
+%                 \newtheorem{theorem}{Theorem}[section]
+%                 \newtheorem{lemma}{Lemma}[section]
+%  and then equate the counters by commands like:
+%                 \makeatletter
+%                   \let\c@lemma\c@theorem
+%                  \makeatother
+%
+%  To work correctly the environment name must have a corrresponding 
+%  \XXXautorefname defined.  The following command does the job:
+%
+\def\makeautorefname#1#2{\expandafter\def\csname#1autorefname\endcsname{#2}}
+%
+%  Some standard autorefnames.  If the environment name for an autoref 
+%  you need is not listed below, add a similar line to your TeX file:
+%  
+%\makeautorefname{equation}{Equation}%
+\def\equationautorefname~#1\null{(#1)\null}
+\makeautorefname{footnote}{footnote}%
+\makeautorefname{item}{item}%
+\makeautorefname{figure}{Figure}%
+\makeautorefname{table}{Table}%
+\makeautorefname{part}{Part}%
+\makeautorefname{appendix}{Appendix}%
+\makeautorefname{chapter}{Chapter}%
+\makeautorefname{section}{Section}%
+\makeautorefname{subsection}{Section}%
+\makeautorefname{subsubsection}{Section}%
+\makeautorefname{theorem}{Theorem}%
+\makeautorefname{thm}{Theorem}%
+\makeautorefname{cor}{Corollary}%
+\makeautorefname{lem}{Lemma}%
+\makeautorefname{prop}{Proposition}%
+\makeautorefname{pro}{Property}
+\makeautorefname{conj}{Conjecture}%
+\makeautorefname{defn}{Definition}%
+\makeautorefname{notn}{Notation}
+\makeautorefname{notns}{Notations}
+\makeautorefname{rem}{Remark}%
+\makeautorefname{quest}{Question}%
+\makeautorefname{exmp}{Example}%
+\makeautorefname{ax}{Axiom}%
+\makeautorefname{claim}{Claim}%
+\makeautorefname{ass}{Assumption}%
+\makeautorefname{asss}{Assumptions}%
+\makeautorefname{con}{Construction}%
+\makeautorefname{prob}{Problem}%
+\makeautorefname{warn}{Warning}%
+\makeautorefname{obs}{Observation}%
+\makeautorefname{conv}{Convention}%
+
+
+%
+%                  *** End of hyperref stuff ***
+
+%Convinience commands
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cd}{\cdot}
+
+%theoremstyle{plain} --- default
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{prob}{Problem}[section]
+\newtheorem{conj}{Conjecture}[section]
+%\newtheorem{ass}{Assumption}[section]
+%\newtheorem{asses}{Assumptions}[section]
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{ass}{Assumption}[section]
+\newtheorem{asss}{Assumptions}[section]
+\newtheorem{ax}{Axiom}[section]
+\newtheorem{con}{Construction}[section]
+\newtheorem{exmp}{Example}[section]
+\newtheorem{notn}{Notation}[section]
+\newtheorem{notns}{Notations}[section]
+\newtheorem{pro}{Property}[section]
+\newtheorem{quest}{Question}[section]
+\newtheorem{rem}{Remark}[section]
+\newtheorem{warn}{Warning}[section]
+\newtheorem{sch}{Scholium}[section]
+\newtheorem{obs}{Observation}[section]
+\newtheorem{conv}{Convention}[section]
+
+%%%% hack to get fullref working correctly
+\makeatletter
+\let\c@obs=\c@thm
+\let\c@cor=\c@thm
+\let\c@prop=\c@thm
+\let\c@lem=\c@thm
+\let\c@prob=\c@thm
+\let\c@con=\c@thm
+\let\c@conj=\c@thm
+\let\c@defn=\c@thm
+\let\c@notn=\c@thm
+\let\c@notns=\c@thm
+\let\c@exmp=\c@thm
+\let\c@ax=\c@thm
+\let\c@pro=\c@thm
+\let\c@ass=\c@thm
+\let\c@warn=\c@thm
+\let\c@rem=\c@thm
+\let\c@sch=\c@thm
+\let\c@equation\c@thm
+\numberwithin{equation}{section}
+\makeatother
+
+\bibliographystyle{plain}
+
+%--------Meta Data: Fill in your info------
+\title{The Gamma Function: A Constructive Approach}
+
+\author{Ahan Datta}
+
+\begin{document}
+
+\begin{abstract}
+
+This paper motivates the study of the $\Gamma$ function for a practical audience.
+For accessibility to non-mathematicians, we limit our analysis to $\R$.
+We derive the most important formulas and properties of the $\Gamma$ function for the practical student with clear, easy-to-follow arguments.
+Finally, we show the power of the $\Gamma$ function by computing some example integrals and sums.
+
+\end{abstract}
+
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+    \input{Introduction}
+
+\newpage
+\section{Deriving the Gamma Function}
+
+    \input{Deriving_the_Gamma_Function}
+
+\newpage
+\section{Alternative Representations}
+
+    \input{Alternate_Representations}
+
+\newpage
+\section{Weierstrass and the Reflection Formula}
+
+    \input{Reflection_Formula}
+
+\newpage
+\section{The Polygamma Functions}
+
+    \input{Polygamma_Functions}
+
+\newpage
+\section{The Beta Function}
+
+    \input{Beta_Function}
+
+\newpage
+\section{Example Computations Using the Gamma Function}
+
+    \input{Computations}
+
+\begin{thebibliography}{6}
+
+    \bibitem{uniquenessPF}
+    \href{https://christophborgers.com/bohr-mollerup-theorem}{Proof of the Bohr-Mollerup Theorem} (Christoph B\"{o}rgers)
+
+    \bibitem{uniquenessPF2}
+    \href{https://dspace.mit.edu/bitstream/handle/1721.1/78574/18-100c-spring-2006/contents/projects/duong.pdf}{Another Proof of the Boh-Molleup Theorem} (Thu Ngoc Duong)
+
+    \bibitem{WallisProduct}
+    \href{https://www.diva-portal.org/smash/get/diva2:375184/FULLTEXT01.pdf}{History and proof of the Wallis Product} (Johan W\"{a}stlund)
+
+    \bibitem{Gaussian}
+    \href{https://kconrad.math.uconn.edu/blurbs/analysis/gaussianintegral.pdf}{Five proofs of the Gaussian Integral} (Keith Conrad)
+
+    \bibitem{SinProduct}
+    \href{https://www.sciencedirect.com/science/article/pii/0022247X77902347?ref=pdf\_download\&fr=RR-2\&rr=8a870c785b50e21b}{Proof of sin product formula} (W. F. Eberlin)
+
+    \bibitem{EulerMascheroni}
+    \href{https://mathworld.wolfram.com/Euler-MascheroniConstant.html}{Properties of $\gamma$} (Wolfram Mathworld)
+
+\end{thebibliography}
+
+\end{document}
+

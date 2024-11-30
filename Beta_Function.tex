@@ -1,0 +1,64 @@
+Recall the integral form of $\Gamma(x)$ given in \eqref{intForm} by
+$$\Gamma(x) = \int_{0}^\infty t^{x-1} e^{-t} \ dt.$$
+This lets us solve a class of problems which is otherwise intractable. 
+One such class of integrals is given by the Beta function, which we will derive now.
+
+Consider the product of $\Gamma$ functions
+$$\Gamma(x)\Gamma(y) = \int_{0}^\infty \mu^{x-1} e^{-\mu} \ d\mu \int_{0}^\infty \nu^{y-1} e^{-\nu} \ d\nu.$$
+Now make the substitution $\mu = u^2, \nu = v^2,$ which means that $d\mu = 2 u du$ and $d\nu = 2 vdv.$
+Recognizing that our bounds are unchanged, we find the following.
+$$\Gamma(x)\Gamma(y) = 4\int_{0}^\infty u^{2x-1} e^{-u^2} \ du \int_{0}^\infty v^{2y-1} e^{-v^2} \ dv$$
+Carelessly, we can combine these integrals.
+$$\Gamma(x)\Gamma(y) = 4\int_{0}^\infty \int_{0}^\infty u^{2x-1} v^{2y-1} e^{-(u^2 + v^2)} \ du \ dv.$$
+To get rid of the factor of four, we can exploit the even property of the exponential.
+By taking the absolute value of $u$ and $v$, while simultaneously expanding the bounds to all of $\R$, we may absorb the four into our integrals directly.
+$$\Gamma(x)\Gamma(y) = \int_{-\infty}^\infty \int_{-\infty}^\infty |u|^{2x-1} |v|^{2y-1} e^{-(u^2 + v^2)} \ du \ dv$$
+The $u^2 + v^2$ in the resultant integral motivates us to transform into polar coordinates.
+This means that $u = r \cos \theta, v = r \sin \theta$, and $du dv = r dr d\theta$.
+Taking care of our bounds, we find the following integral.
+$$\Gamma(x)\Gamma(y) =  \int_{0}^\infty \int_{0}^{2\pi} r |r\cos \theta|^{2x-1} |r\sin \theta|^{2y-1} e^{-r^2} \ dr \ d\theta$$
+We now pull out all of the $r$ dependence. 
+$$\Gamma(x)\Gamma(y) = \int_{0}^\infty r^{2x + 2y - 1} e^{-r^2} \ dr \int_{0}^{2\pi} |\cos \theta|^{2x-1} |\sin \theta|^{2y-1} \ d\theta$$
+In the radial integral, making the substitution $t = r^2$, we see the leading integral to be nothing but $\Gamma(x + y)/2$.
+This gives a promising result.
+$$\Gamma(x)\Gamma(y) = \frac{\Gamma(x+y)}{2} \int_{0}^{2\pi} |\cos \theta|^{2x-1} |\sin \theta|^{2y-1} \ d\theta$$
+The final trick to clean this up comes from noticing that integrating over the whole unit circle of the absolute values of sine and cosine is equivalent to integrating over the first quadrant four times.
+Therefore,
+$$\Gamma(x)\Gamma(y) = 2\Gamma(x+y) \int_{0}^{\frac{\pi}{2}} \cos^{2x-1} (\theta) \sin^{2y-1} (\theta) \ d\theta.$$
+
+The integral present in this formula is not trivial to compute for general $x$ and $y$.
+Then, we are only one definition away from solving this whole class of integrals.
+
+\begin{defn}
+The Beta function is given by
+\begin{equation}\label{betaEquation}
+\boxed{B(x,y) \equiv 2 \int_{0}^{\frac{\pi}{2}} \cos^{2x-1} \theta \sin^{2x-1} \theta \ d\theta}
+\end{equation}
+\end{defn}
+
+The fact that $B$ is defined in terms of two variables makes it even more useful, as we have another degree of freedom to parameterize integrals.
+
+The motivation for this definition is clear from the previous computation -- it's connection to $\Gamma(x)$.
+We find the most important formula for $B$ as below.
+\begin{equation}\label{betaGamma}
+\boxed{B(x,y) = \frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}}
+\end{equation}
+
+We leave finding the product form, recursion formula, and reflection formula for $B$ as an exercise for the reader.
+These computations are very similar to those of the Polygamma functions.
+
+Finally, we convert \eqref{betaEquation} into a different, more applicable form.
+We know that 
+$$B(x,y) = 2 \int_{0}^{\frac{\pi}{2}} \cos^{2x-1} \theta \sin ^{2y-1} \theta \ d\theta.$$
+We first use the Pythagorean identity $\sin^2 \theta = 1 - \cos^2 \theta$.
+$$B(x,y) = 2 \int_{0}^{\frac{\pi}{2}} (\cos^{2})^{x-1/2} \theta (1 - \cos^2 \theta)^{y-1/2} \ d\theta$$
+Now we let $u = \cos^2 \theta$, so $\theta = \arccos \sqrt{u} \implies d\theta = \frac{-du}{2\sqrt{u}\sqrt{1 - u}}.$
+As for the bounds, as $\theta \rightarrow 0$, $u \rightarrow 1$, and as $\theta \rightarrow \frac{\pi}{2}$, $u \rightarrow 0$.
+This gives us the following.
+$$B(x,y) = -2 \int_{1}^0 u^{x - \frac{1}{2}} (1 - u)^{y - \frac{1}{2}} \frac{1}{2\sqrt{u}\sqrt{1-u}} \ du$$
+We use the negative sign to flip the bounds, and find the final form we desire.
+
+\begin{equation}\label{betaEquationPolynomial}
+\boxed{B(x,y) = \int_0^1 u^{x-1} (1-u)^{y-1} \ du}
+\end{equation}
+
